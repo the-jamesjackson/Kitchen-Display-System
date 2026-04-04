@@ -37,7 +37,10 @@ export default function TicketCard({ ticket, onToggleItem, onClear, isCleared, o
             onClick={() => !isCleared && onToggleItem(ticket.id, item.id)}
           >
             <span className="item-qty">×{item.quantity}</span>
-            <span className="item-name">{item.name}</span>
+            <span className="item-name">
+              {item.name}
+              {item.mods && <span className="item-mods">{item.mods}</span>}
+            </span>
             <span className="item-check">{item.done ? '✓' : ''}</span>
           </li>
         ))}
@@ -45,7 +48,7 @@ export default function TicketCard({ ticket, onToggleItem, onClear, isCleared, o
 
       {!isCleared && allDone && (
         <button className="clear-btn" onClick={() => onClear(ticket.id)}>
-          Clear Ticket
+          Bump
         </button>
       )}
 

@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 export default function TicketForm({ onSubmit }) {
   const [table, setTable] = useState('');
-  const [items, setItems] = useState([{ name: '', quantity: 1 }]);
+  const [items, setItems] = useState([{ name: '', quantity: 1, mods: '' }]);
 
-  const addItem = () => setItems((prev) => [...prev, { name: '', quantity: 1 }]);
+  const addItem = () => setItems((prev) => [...prev, { name: '', quantity: 1, mods: '' }]);
 
   const removeItem = (index) => {
     if (items.length === 1) return;
@@ -23,7 +23,7 @@ export default function TicketForm({ onSubmit }) {
     if (!table || validItems.length === 0) return;
     onSubmit(table, validItems);
     setTable('');
-    setItems([{ name: '', quantity: 1 }]);
+    setItems([{ name: '', quantity: 1, mods: '' }]);
   };
 
   return (
@@ -60,14 +60,24 @@ export default function TicketForm({ onSubmit }) {
               inputMode="numeric"
               aria-label="Quantity"
             />
-            <input
-              type="text"
-              value={item.name}
-              onChange={(e) => updateItem(index, 'name', e.target.value)}
-              placeholder="Item name"
-              className="name-input"
-              aria-label="Item name"
-            />
+            <div className="item-inputs">
+              <input
+                type="text"
+                value={item.name}
+                onChange={(e) => updateItem(index, 'name', e.target.value)}
+                placeholder="Item name"
+                className="name-input"
+                aria-label="Item name"
+              />
+              <input
+                type="text"
+                value={item.mods}
+                onChange={(e) => updateItem(index, 'mods', e.target.value)}
+                placeholder="Notes"
+                className="mods-input"
+                aria-label="Notes"
+              />
+            </div>
             <button
               type="button"
               onClick={() => removeItem(index)}

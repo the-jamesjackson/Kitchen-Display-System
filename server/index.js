@@ -32,6 +32,7 @@ io.on('connection', (socket) => {
         id: uuidv4(),
         name: String(item.name).trim(),
         quantity: parseInt(item.quantity, 10) || 1,
+        mods: item.mods ? String(item.mods).trim() : '',
         done: false,
       })),
       createdAt: Date.now(),
