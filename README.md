@@ -1,5 +1,7 @@
 # Kitchen Display System (KDS)
 
+🔗 **[Live Demo](https://kitchen-display-system-pie3.onrender.com/)**
+
 The restaurant that I work at as a part time job got hacked, so both our Kitchen Display System and POS were down. This meant that the front of house team had to write down orders on physical tickets and hand the tickets to me, an expeditor, so that I can individually call out each item on the ticket. As you can imagine, this gets inefficient during a rush, where twenty tickets can get handed to you at once. I decided to make the solution to this problem myself: a lightweight, real-time kitchen display for when your primary KDS/POS goes down.
 
 ## Features
