@@ -1,7 +1,13 @@
-# Backup Kitchen Display System (KDS)
+# Kitchen Display System (KDS)
 
-A lightweight, real-time kitchen display for when your primary POS/KDS goes down.
-No database, no auth, no config — just open the URL and go.
+The restaurant that I work at as a part time job got hacked, so both our Kitchen Display System and POS were down. This meant that the front of house team had to write down orders on physical tickets and hand the tickets to me, an expeditor, so that I can individually call out each item on the ticket. As you can imagine, this gets inefficient during a rush, where twenty tickets can get handed to you at once. I decided to make the solution to this problem myself: a lightweight, real-time kitchen display for when your primary KDS/POS goes down.
+
+## Features
+- Real-time sync across all connected devices via WebSockets 
+- Tickets sorted by oldest first so the kitchen always works highest priority first  
+- Per-item toggling with instant broadcast to all screens
+- Bump & unbump — clear completed tickets to a recent history with the ability to restore them
+- Live/Offline connection indicator
 
 ## Requirements
 
