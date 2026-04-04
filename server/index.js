@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const path = require('path');
 const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 
@@ -8,6 +9,11 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: '*', methods: ['GET', 'POST'] },
 });
+
+const clientDist = path.join(__dirname, '../client/dist');
+app.use(express.static(clientDist));
+app.get('/health', (_req, res) => res.sendStatus(200));
+app.get('*', (_req, res) => res.sendFile(path.join(clientDist, 'index.html')));
 
 const tickets = {};
 
