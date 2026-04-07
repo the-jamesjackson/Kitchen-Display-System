@@ -37,6 +37,11 @@ export default function App() {
       setTickets((prev) => [...prev, ticket]);
     });
 
+    socket.on('purged', () => {
+      setTickets([]);
+      setClearedTickets([]);
+    });
+
     return () => {
       socket.off('connect');
       socket.off('disconnect');
@@ -45,6 +50,7 @@ export default function App() {
       socket.off('ticket_updated');
       socket.off('ticket_cleared');
       socket.off('ticket_unbumped');
+      socket.off('purged');
     };
   }, []);
 
@@ -64,16 +70,38 @@ export default function App() {
     socket.emit('unbump_ticket', { ticketId });
   };
 
-  // Oldest tickets first — highest priority for the kitchen
-  const sortedTickets = [...tickets].sort((a, b) => a.createdAt - b.createdAt);
+  const endService = () => {
+    if (!window.confirm('Are you sure that you would like to end service? This will clear all active and recent tickets for everyone.')) return;
+    socket.emit('end_service');
+  };
+
+  const prioritizeTicket = (ticketId) => {
+    socket.emit('prioritize_ticket', { ticketId });
+  };
+
+  const tagItem = (ticketId, itemId) => {
+    socket.emit('tag_item', { ticketId, itemId });
+  };
+
+  // Prioritized tickets first, then oldest first within each group
+  const sortedTickets = [...tickets].sort((a, b) => {
+    if (a.prioritized && !b.prioritized) return -1;
+    if (!a.prioritized && b.prioritized) return 1;
+    return a.createdAt - b.createdAt;
+  });
 
   return (
     <div className="app">
       <header className="app-header">
         <h1>Kitchen Display System</h1>
-        <span className={`connection-badge ${connected ? 'connected' : 'disconnected'}`}>
-          {connected ? 'Live' : 'Offline'}
-        </span>
+        <div className="header-actions">
+          <button className="end-service-btn" onClick={endService}>
+            End Service
+          </button>
+          <span className={`connection-badge ${connected ? 'connected' : 'disconnected'}`}>
+            {connected ? 'Live' : 'Offline'}
+          </span>
+        </div>
       </header>
       <div className="app-body">
         <aside className="form-panel">
@@ -92,6 +120,8 @@ export default function App() {
                       ticket={ticket}
                       onToggleItem={toggleItem}
                       onClear={clearTicket}
+                      onPrioritize={prioritizeTicket}
+                      onTagItem={tagItem}
                     />
                   ))}
                 </div>

@@ -44,6 +44,32 @@ body {
   letter-spacing: -0.03em;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.end-service-btn {
+  background: #2d0f0f;
+  border: 1px solid #da3633;
+  color: #f85149;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  touch-action: manipulation;
+  transition: all 0.15s;
+}
+
+.end-service-btn:hover {
+  background: #3d1010;
+}
+
 .connection-badge {
   padding: 4px 12px;
   border-radius: 20px;
@@ -300,6 +326,7 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
   align-content: start;
+  align-items: start;
 }
 
 /* ── Ticket Card ──────────────────────────────────── */
@@ -313,9 +340,40 @@ body {
   transition: border-left-color 0.3s, opacity 0.3s;
 }
 
+.ticket-card.ticket-wide {
+  grid-column: span 2;
+}
+
+.item-columns {
+  display: flex;
+}
+
+.item-list-col {
+  flex: 1;
+  min-height: unset;
+}
+
+.item-list-col-right {
+  border-left: 1px solid #30363d;
+}
+
 .ticket-card.ticket-complete {
   border-left-color: #238636;
   opacity: 0.72;
+}
+
+.ticket-card.ticket-prioritized {
+  border-left-color: #ec4899;
+}
+
+.priority-banner {
+  background: #ec4899;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding: 5px;
 }
 
 .ticket-header {
@@ -334,6 +392,19 @@ body {
   letter-spacing: -0.03em;
 }
 
+.ticket-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.fired-time {
+  font-size: 0.75rem;
+  color: #484f58;
+  font-weight: 500;
+}
+
 .elapsed {
   font-size: 0.82rem;
   color: #6e7681;
@@ -346,6 +417,7 @@ body {
 .item-list {
   list-style: none;
   padding: 6px 0;
+  min-height: calc(5 * 58px);
 }
 
 .item {
@@ -410,13 +482,79 @@ body {
 .item-done .item-name { color: #484f58; text-decoration: line-through; }
 .item-done .item-check { color: #3fb950; }
 
-/* ── Clear Button ─────────────────────────────────── */
+/* Tagged state */
+.item-tagged {
+  background: #0d1f38;
+  border-left: 3px solid #388bfd;
+}
+
+.item-tagged .item-qty  { color: #388bfd; }
+.item-tagged .item-name { color: #a5c8ff; }
+
+/* ── Tag Button ───────────────────────────────────── */
+
+.tag-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #6e7681;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.15s;
+}
+
+.tag-btn:hover {
+  border-color: #388bfd;
+  color: #388bfd;
+}
+
+.item-tagged .tag-btn {
+  border-color: #388bfd;
+  color: #388bfd;
+  background: #0d1f38;
+}
+
+/* ── Ticket Actions ───────────────────────────────── */
+
+.ticket-actions {
+  display: flex;
+  border-top: 1px solid #30363d;
+}
+
+.prioritize-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-right: 1px solid #30363d;
+  color: #6e7681;
+  padding: 13px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.prioritize-btn:hover {
+  background: #21262d;
+  color: #ec4899;
+}
+
+.prioritize-btn.active {
+  color: #ec4899;
+  background: #1f0d16;
+}
 
 .clear-btn {
-  width: 100%;
+  flex: 1;
   background: #0f2d1a;
   border: none;
-  border-top: 1px solid #238636;
   color: #3fb950;
   padding: 15px;
   font-size: 1rem;
