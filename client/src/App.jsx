@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import TicketForm from './components/TicketForm';
 import TicketCard from './components/TicketCard';
+import LandingPage from './components/LandingPage';
 
 const socket = io();
 
 export default function App() {
+  const [session, setSession] = useState(null); // { serviceId, restaurantName }
   const [tickets, setTickets] = useState([]);
   const [clearedTickets, setClearedTickets] = useState([]);
   const [connected, setConnected] = useState(false);
@@ -37,7 +39,8 @@ export default function App() {
       setTickets((prev) => [...prev, ticket]);
     });
 
-    socket.on('purged', () => {
+    socket.on('service_ended', () => {
+      setSession(null);
       setTickets([]);
       setClearedTickets([]);
     });
@@ -50,9 +53,13 @@ export default function App() {
       socket.off('ticket_updated');
       socket.off('ticket_cleared');
       socket.off('ticket_unbumped');
-      socket.off('purged');
+      socket.off('service_ended');
     };
   }, []);
+
+  const handleJoin = (newSession) => {
+    setSession(newSession);
+  };
 
   const createTicket = (table, items) => {
     socket.emit('create_ticket', { table, items });
@@ -90,10 +97,14 @@ export default function App() {
     return a.createdAt - b.createdAt;
   });
 
+  if (!session) {
+    return <LandingPage socket={socket} onJoin={handleJoin} />;
+  }
+
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Kitchen Display System</h1>
+        <h1>{session.restaurantName}</h1>
         <div className="header-actions">
           <button className="end-service-btn" onClick={endService}>
             End Service

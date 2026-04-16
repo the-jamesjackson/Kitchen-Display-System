@@ -7,8 +7,16 @@ const pool = new Pool({
 
 async function setup() {
   await pool.query(`
+    CREATE TABLE IF NOT EXISTS services (
+      id TEXT PRIMARY KEY,
+      pin TEXT NOT NULL UNIQUE,
+      restaurant_name TEXT NOT NULL,
+      created_at BIGINT NOT NULL
+    );
+
     CREATE TABLE IF NOT EXISTS tickets (
       id TEXT PRIMARY KEY,
+      service_id TEXT REFERENCES services(id) ON DELETE CASCADE,
       table_num TEXT NOT NULL,
       created_at BIGINT NOT NULL,
       prioritized BOOLEAN NOT NULL DEFAULT false,
@@ -27,18 +35,34 @@ async function setup() {
       position INTEGER NOT NULL
     );
   `);
+
+  // For existing deployments without service_id on tickets
+  await pool.query(`
+    ALTER TABLE tickets ADD COLUMN IF NOT EXISTS service_id TEXT REFERENCES services(id) ON DELETE CASCADE;
+  `);
 }
 
-async function fetchActiveTickets() {
+async function generatePin() {
+  for (let i = 0; i < 10; i++) {
+    const pin = String(Math.floor(1000 + Math.random() * 9000));
+    const { rows } = await pool.query('SELECT id FROM services WHERE pin = $1', [pin]);
+    if (rows.length === 0) return pin;
+  }
+  throw new Error('Could not generate unique PIN');
+}
+
+async function fetchActiveTickets(serviceId) {
   const { rows: ticketRows } = await pool.query(
-    'SELECT * FROM tickets WHERE cleared = false ORDER BY created_at ASC'
+    'SELECT * FROM tickets WHERE cleared = false AND service_id = $1 ORDER BY created_at ASC',
+    [serviceId]
   );
   return attachItems(ticketRows);
 }
 
-async function fetchClearedTickets() {
+async function fetchClearedTickets(serviceId) {
   const { rows: ticketRows } = await pool.query(
-    'SELECT * FROM tickets WHERE cleared = true ORDER BY cleared_at DESC LIMIT 30'
+    'SELECT * FROM tickets WHERE cleared = true AND service_id = $1 ORDER BY cleared_at DESC LIMIT 30',
+    [serviceId]
   );
   return attachItems(ticketRows);
 }
@@ -70,4 +94,4 @@ function formatTicket(t, items) {
   };
 }
 
-module.exports = { pool, setup, fetchActiveTickets, fetchClearedTickets };
+module.exports = { pool, setup, generatePin, fetchActiveTickets, fetchClearedTickets };

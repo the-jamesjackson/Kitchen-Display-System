@@ -19,6 +19,151 @@ body {
   flex-direction: column;
 }
 
+/* ── Landing Page ─────────────────────────────────── */
+
+.landing {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d1117;
+}
+
+.landing-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.landing-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #f0f6fc;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+.landing-heading {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #f0f6fc;
+  letter-spacing: -0.02em;
+}
+
+.landing-subtitle {
+  font-size: 0.9rem;
+  color: #6e7681;
+  text-align: center;
+}
+
+.landing-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.landing-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  touch-action: manipulation;
+  transition: all 0.15s;
+}
+
+.landing-btn-primary {
+  background: #d97706;
+  color: #fff;
+}
+
+.landing-btn-primary:hover:not(:disabled) {
+  background: #b45309;
+}
+
+.landing-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.landing-btn-secondary {
+  background: #21262d;
+  color: #6e7681;
+  border: 1px solid #30363d;
+}
+
+.landing-btn-secondary:hover {
+  background: #2d333b;
+  color: #f0f6fc;
+}
+
+.landing-input {
+  width: 100%;
+  background: #0d1117;
+  border: 2px solid #30363d;
+  color: #f0f6fc;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 1rem;
+  outline: none;
+  margin-bottom: 4px;
+  transition: border-color 0.15s;
+}
+
+.landing-input:focus {
+  border-color: #388bfd;
+}
+
+.landing-input::placeholder {
+  color: #3c4148;
+}
+
+.landing-input-pin {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.3em;
+}
+
+.landing-error {
+  font-size: 0.85rem;
+  color: #f85149;
+  margin-bottom: 4px;
+}
+
+.landing-back {
+  background: none;
+  border: none;
+  color: #6e7681;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.15s;
+}
+
+.landing-back:hover {
+  color: #f0f6fc;
+}
+
+.pin-display {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: 0.4em;
+  color: #d97706;
+  text-align: center;
+  padding: 16px 0;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Layout ───────────────────────────────────────── */
 
 .app {
